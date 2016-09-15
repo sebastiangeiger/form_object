@@ -18,5 +18,6 @@ defmodule RegistrationForm.AccountTest do
   test "Cannot create an account with a blank email" do
     changeset = Account.changeset(%Account{}, %{email: ""})
     refute changeset.valid?
+    assert Keyword.get(changeset.errors, :email) == {"can't be blank", []}
   end
 end
