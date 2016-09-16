@@ -9,15 +9,20 @@ defmodule RegistrationForm.Registration do
 
   def changeset(_struct, params \\ %{}) do
     %{
-      account: %Account{email: params[:email]},
-      profile: %Profile{name: params[:name]}
+      account: Account.changeset(%Account{}, %{email: params[:email]}),
+      profile: Profile.changeset(%Profile{}, %{name: params[:name]})
     }
   end
 
   def insert(%{account: account, profile: profile}) do
-    Repo.insert! account
-    Repo.insert! profile
-    {:ok, :fake}
+    multi = Ecto.Multi.new
+            |> Ecto.Multi.insert(:account, account)
+            |> Ecto.Multi.insert(:profile, profile)
+
+    case Repo.transaction(multi) do
+      {:ok, _} -> {:ok, :fake}
+      {:error, _, _, _} -> {:error, :fake}
+    end
   end
 end
 
