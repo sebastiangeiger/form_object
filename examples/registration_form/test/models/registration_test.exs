@@ -32,6 +32,11 @@ defmodule RegistrationForm.RegistrationTest do
       {:error, changeset} = Registration.insert changeset
       assert Keyword.get(changeset.errors, :email) == {"can't be blank", []}
     end
+
+    test "returns Registration", %{changeset: changeset} do
+      {:error, changeset} = Registration.insert changeset
+      assert changeset.data == %Registration{email: "", name: "some user"}
+    end
   end
 
   describe "Registration with empty name and email 'user@example.com'" do
