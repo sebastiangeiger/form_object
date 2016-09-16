@@ -15,45 +15,47 @@ defmodule RegistrationForm.RegistrationTest do
     assert one_and_only(Account).email == "user@example.com"
   end
 
-  test "Registration with name 'some user' and empty email does not create account or profile" do
-    assert Repo.all(Profile) == []
-    assert Repo.all(Account) == []
-    changeset = Registration.changeset(%Registration{},
-                  %{name: "some user", email: ""})
-    {:error, _} = Registration.insert changeset
-    assert Repo.all(Profile) == []
-    assert Repo.all(Account) == []
+  describe "Registration with name 'some user' and empty email" do
+    setup do
+      changeset = Registration.changeset(%Registration{},
+      %{name: "some user", email: ""})
+      {:ok, %{changeset: changeset}}
+    end
+
+    test "does not create account or profile", %{changeset: changeset} do
+      {:error, _} = Registration.insert changeset
+      assert Repo.all(Profile) == []
+      assert Repo.all(Account) == []
+    end
+
+    test "returns right errors", %{changeset: changeset} do
+      {:error, changeset} = Registration.insert changeset
+      assert Keyword.get(changeset.errors, :email) == {"can't be blank", []}
+    end
   end
 
-  test "Registration with name 'some user' and empty email returns right errors" do
-    changeset = Registration.changeset(%Registration{},
-                  %{name: "some user", email: ""})
-    {:error, changeset} = Registration.insert changeset
-    assert Keyword.get(changeset.errors, :email) == {"can't be blank", []}
-  end
+  describe "Registration with empty name and email 'user@example.com'" do
+    setup do
+      changeset = Registration.changeset(%Registration{},
+      %{name: "", email: "user@example.com"})
+      {:ok, %{changeset: changeset}}
+    end
 
-  test "Registration with empty name and email 'user@example.com' does not create account or profile" do
-    assert Repo.all(Profile) == []
-    assert Repo.all(Account) == []
-    changeset = Registration.changeset(%Registration{},
-                  %{name: "", email: "user@example.com"})
-    {:error, _} = Registration.insert changeset
-    assert Repo.all(Profile) == []
-    assert Repo.all(Account) == []
-  end
+    test "does not create account or profile", %{changeset: changeset} do
+      {:error, _} = Registration.insert changeset
+      assert Repo.all(Profile) == []
+      assert Repo.all(Account) == []
+    end
 
-  test "Registration with empty name and email 'user@example.com' returns right errors" do
-    changeset = Registration.changeset(%Registration{},
-                  %{name: "", email: "user@example.com"})
-    {:error, changeset} = Registration.insert changeset
-    assert Keyword.get(changeset.errors, :name) == {"can't be blank", []}
-  end
+    test "returns right errors", %{changeset: changeset} do
+      {:error, changeset} = Registration.insert changeset
+      assert Keyword.get(changeset.errors, :name) == {"can't be blank", []}
+    end
 
-  test "Registration with empty name and email 'user@example.com' returns Registration" do
-    changeset = Registration.changeset(%Registration{},
-                  %{name: "", email: "user@example.com"})
-    {:error, changeset} = Registration.insert changeset
-    assert changeset.data == %Registration{email: "user@example.com", name: ""}
+    test "returns Registration", %{changeset: changeset} do
+      {:error, changeset} = Registration.insert changeset
+      assert changeset.data == %Registration{email: "user@example.com", name: ""}
+    end
   end
 
   defp one_and_only(module) do
