@@ -21,7 +21,7 @@ defmodule RegistrationForm.Registration do
 
     case Repo.transaction(multi) do
       {:ok, _} -> {:ok, :fake}
-      {:error, _, _, _} -> {:error, :fake}
+      {:error, _, changeset, _} -> {:error, changeset}
     end
   end
 end

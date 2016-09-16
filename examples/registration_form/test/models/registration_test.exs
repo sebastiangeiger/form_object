@@ -25,6 +25,13 @@ defmodule RegistrationForm.RegistrationTest do
     assert Repo.all(Account) == []
   end
 
+  test "Registration with name 'some user' and empty email returns right errors" do
+    changeset = Registration.changeset(%Registration{},
+                  %{name: "some user", email: ""})
+    {:error, changeset} = Registration.insert changeset
+    assert Keyword.get(changeset.errors, :email) == {"can't be blank", []}
+  end
+
   test "Registration with empty name and email 'user@example.com' does not create account or profile" do
     assert Repo.all(Profile) == []
     assert Repo.all(Account) == []
@@ -33,6 +40,13 @@ defmodule RegistrationForm.RegistrationTest do
     {:error, _} = Registration.insert changeset
     assert Repo.all(Profile) == []
     assert Repo.all(Account) == []
+  end
+
+  test "Registration with empty name and email 'user@example.com' returns right errors" do
+    changeset = Registration.changeset(%Registration{},
+                  %{name: "", email: "user@example.com"})
+    {:error, changeset} = Registration.insert changeset
+    assert Keyword.get(changeset.errors, :name) == {"can't be blank", []}
   end
 
   defp one_and_only(module) do
