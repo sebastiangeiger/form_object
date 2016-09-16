@@ -49,6 +49,13 @@ defmodule RegistrationForm.RegistrationTest do
     assert Keyword.get(changeset.errors, :name) == {"can't be blank", []}
   end
 
+  test "Registration with empty name and email 'user@example.com' returns Registration" do
+    changeset = Registration.changeset(%Registration{},
+                  %{name: "", email: "user@example.com"})
+    {:error, changeset} = Registration.insert changeset
+    assert changeset.data == %Registration{email: "user@example.com", name: ""}
+  end
+
   defp one_and_only(module) do
     records = Repo.all(module)
     assert records |> length == 1
