@@ -59,7 +59,7 @@ defmodule RegistrationForm.Registration do
   # model
 
   def changeset(_struct, params \\ %{}) do
-    data = %__MODULE__{name: params[:name], email: params[:email]}
+    data = %__MODULE__{name: params["name"], email: params["email"]}
     %RegistrationForm.Changeset{data: data, params: params}
   end
 

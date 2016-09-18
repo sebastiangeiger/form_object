@@ -15,7 +15,7 @@ defmodule RegistrationForm.RegistrationController do
       {:ok, _registration} ->
         conn
         |> put_flash(:info, "Registration created successfully.")
-        |> redirect(to: registration_path(conn, :index))
+        |> redirect(to: registration_path(conn, :new))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end

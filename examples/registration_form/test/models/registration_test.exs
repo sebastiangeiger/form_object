@@ -9,7 +9,7 @@ defmodule RegistrationForm.RegistrationTest do
     assert Repo.all(Profile) == []
     assert Repo.all(Account) == []
     changeset = Registration.changeset(%Registration{},
-                  %{name: "some user", email: "user@example.com"})
+                  %{"name" => "some user", "email" => "user@example.com"})
     {:ok, _} = Registration.insert changeset
     assert one_and_only(Profile).name == "some user"
     assert one_and_only(Account).email == "user@example.com"
@@ -18,7 +18,7 @@ defmodule RegistrationForm.RegistrationTest do
   describe "Registration with name 'some user' and empty email" do
     setup do
       changeset = Registration.changeset(%Registration{},
-      %{name: "some user", email: ""})
+      %{"name" => "some user", "email" => ""})
       {:ok, %{changeset: changeset}}
     end
 
@@ -42,7 +42,7 @@ defmodule RegistrationForm.RegistrationTest do
   describe "Registration with empty name and email 'user@example.com'" do
     setup do
       changeset = Registration.changeset(%Registration{},
-      %{name: "", email: "user@example.com"})
+      %{"name" => "", "email" => "user@example.com"})
       {:ok, %{changeset: changeset}}
     end
 
