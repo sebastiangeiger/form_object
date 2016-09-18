@@ -1,6 +1,6 @@
 defmodule RegistrationForm.Changeset do
   #TODO: Move the FormObject.Changeset eventually
-  defstruct errors: [], data: nil, params: [], action: nil
+  defstruct errors: [], data: nil, params: %{}, action: nil
 end
 
 if Code.ensure_loaded?(Phoenix.HTML) do
