@@ -71,7 +71,7 @@ defmodule RegistrationForm.Registration do
             |> Ecto.Multi.insert(:profile, profile)
 
     case Repo.transaction(multi) do
-      {:ok, _} -> {:ok, :fake}
+      {:ok, created_records} -> {:ok, created_records}
       {:error, _, changeset, _} ->
         {:error,
           %RegistrationForm.Changeset{

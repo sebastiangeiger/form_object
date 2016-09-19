@@ -1,9 +1,9 @@
 defmodule RegistrationForm.RegistrationControllerTest do
   use RegistrationForm.ConnCase
 
-  alias RegistrationForm.Registration
   alias RegistrationForm.Profile
   alias RegistrationForm.Account
+
   @valid_attrs %{name: "some name", email: "user@example.com"}
   @invalid_attrs %{}
 

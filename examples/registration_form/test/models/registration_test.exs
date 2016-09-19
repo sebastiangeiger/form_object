@@ -17,6 +17,12 @@ defmodule RegistrationForm.RegistrationTest do
       assert one_and_only(Profile).name == "some user"
       assert one_and_only(Account).email == "user@example.com"
     end
+
+    test "returns account and profile", %{changeset: changeset} do
+      {:ok, %{profile: profile, account: account}} = Registration.insert changeset
+      assert profile.name == "some user"
+      assert account.email == "user@example.com"
+    end
   end
 
   describe "Registration with name 'some user' and empty email" do
