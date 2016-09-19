@@ -21,6 +21,10 @@ defmodule RegistrationForm.RegistrationControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = post conn, registration_path(conn, :create), registration: @invalid_attrs
-    assert html_response(conn, 200) =~ "New registration"
+    body = html_response(conn, 200)
+    assert body =~ "New registration"
+    assert body =~ "Oops, something went wrong! Please check the errors below."
+    [{_, _, text}] = Floki.find(body, ".help-block")
+    assert text == ["can't be blank"]
   end
 end

@@ -73,7 +73,10 @@ defmodule RegistrationForm.Registration do
     case Repo.transaction(multi) do
       {:ok, _} -> {:ok, :fake}
       {:error, _, changeset, _} ->
-        {:error, %RegistrationForm.Changeset{errors: changeset.errors, data: data}}
+        {:error,
+          %RegistrationForm.Changeset{
+            errors: changeset.errors, data: data, action: :insert
+          }}
     end
   end
 end
